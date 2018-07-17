@@ -1,0 +1,28 @@
+/**
+ * @dir src/
+ *  RotorXor source code.
+ *
+ * classes/
+ *   Classes which make up the RotorXor.
+ *
+ * core/
+ *   Various core functions for interaction with the RotorXor.
+ *
+ * extras/
+ *   Extra tools for RotorXor.
+ *
+ * includes/
+ *   Various helper functions.
+ *
+ * tests/
+ *   Class object tests and demonstrations.
+ *
+ * constants.hh
+ *   Various constants contained in source and shared with includes.
+ *
+ * main.cc
+ *   Source code for main executable manager.
+ *
+ * main.hh
+ *  Header file for main executable manager.
+ */

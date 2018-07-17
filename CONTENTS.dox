@@ -1,0 +1,36 @@
+/**
+ * The RotorXor project is composed of various files and directories
+ * which are listed below:
+ *
+ * doc/
+ *   IMPORTANT DOCUMENTATION about RotorXor which MUST be read.
+ *
+ * src/
+ *   RotorXor source code
+ *
+ * AUTHORS
+ *   A list of developers and contributors to the RotorXor project.
+ *
+ * BUGS
+ *   A list of bugs that need to be corrected.
+ *
+ * CHANGELOG
+ *   The GNU General Public License.
+ *
+ * Doxyfile
+ *   Configuration information for Doxygen, used for automatic
+ *   documentation generation.
+ *
+ * INSTALL
+ *   Quick installation instructions.
+ *
+ * NEWS
+ *   Major changes since the previous version.
+ *
+ * README.md
+ *   Important information that should be reviewed before using
+ *   RotorXor.
+ *
+ * TODO
+ *   Planned changes for future versions.
+ */

@@ -1,0 +1,18 @@
+Commands for make:
+
+	`make all`		Compile main executable.
+
+	`make tests`		Compile tests of the various classes used in RotorXor's implementation.
+
+Tests can also be compiled individually.
+	`make charGenTest`	Tests class CharGen
+	`make rotorTest`	Tests class Rotor
+	`make bankTest`		Tests class RotorBank
+	`make scramblerTest`	Tests class Scrambler
+	`make pulseTest`	Tests class Pulser
+	`make xorTest`		Tests class Xorer
+	`make cipherTest`	Tests class Handler
+
+In addition:
+	`make docs`		Generates documentation (Requires Doxygen)
+
