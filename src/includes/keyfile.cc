@@ -147,6 +147,34 @@ KeyFile::checksum()
  * PUBLIC MEMBER FUNCTIONS - KEYFILE IMPORT / EXPORT
  ********************************************************************************/
 /**
+ * Imports a byte vector keychain into keyFile.
+ *
+ * @param inData byte vector keychain.
+ */
+void
+KeyFile::impKeyData( const std::vector< unsigned char >& inData )
+{
+
+	size_t keys = inData.size() / KEYSIZE;
+
+	keyFile.clear();
+
+	for ( int key = 0; key < keys; key++ )
+	{
+		unsigned char tmpBuf[ KEYSIZE ];
+		int bufLoc = key * KEYSIZE;
+		for ( int byte = 0; byte < KEYSIZE; byte++ )
+		{
+			tmpBuf[ byte ] = inData[ bufLoc + byte ];
+		}
+		Key* tmpKey = new Key;
+		*tmpKey = *(Key*)&tmpBuf;
+		std::unique_ptr< Key > keyPtr( tmpKey );
+		keyFile.push_back( std::move( keyPtr ));
+	}
+}
+
+/**
  * Imports a base64-encoded keychain into keyFile.
  *
  * @param inString base64-encoded keychain.
@@ -157,27 +185,11 @@ KeyFile::impKey( const std::string& inString )
 	std::vector< unsigned char > buffer;
 	buffer = base64Decode( inString );
 
-	size_t keys = buffer.size() / KEYSIZE;
-
-	keyFile.clear();
-
-	for ( int key = 0; key < keys; key++ )
-	{
-		unsigned char tmpBuf[ KEYSIZE ];
-		int bufLoc = key * KEYSIZE;
-		for ( int byte = 0; byte < KEYSIZE; byte++ )
-		{
-			tmpBuf[ byte ] = buffer[ bufLoc + byte ];
-		}
-		Key* tmpKey = new Key;
-		*tmpKey = *(Key*)&tmpBuf;
-		std::unique_ptr< Key > keyPtr( tmpKey );
-		keyFile.push_back( std::move( keyPtr ));
-	}
+	impKeyData( buffer );
 }
 
 /**
- * Exports keyFle to a base64-encoded string.
+ * Exports keyFile to a base64-encoded string.
  *
  * @return base64-encoded keychain.
  */
@@ -185,13 +197,28 @@ std::string
 KeyFile::expKey()
 {
 	std::string outString;
+	std::vector< unsigned char > outData = expKeyData();
+	if ( outData.size() > 0 )
+	{
+		outString += base64Encode( outData );
+	}
+	return outString;
+}
+
+/**
+ * Exports keyFile to a byte vector.
+ *
+ * @return byte vector keychain.
+ */
+std::vector< unsigned char >
+KeyFile::expKeyData()
+{
 	std::vector< unsigned char > outData;
 	if ( keyFile.size() > 0 )
 	{
 		outData = keyFileBytes();
-		outString += base64Encode( outData );
 	}
-	return outString;
+	return outData;
 }
 
 /**

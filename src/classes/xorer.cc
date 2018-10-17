@@ -50,6 +50,8 @@ Xorer::Xorer( int numRotors )
  * Initializes the scrambler and pulser with keys provided from the primary keychain.
  *
  * @param keyVec A vector containing pointers to keys within the primary keychain.
+ *		Keys in the first half of keyVec are for scrambler rotors, while those
+ *		in the second half apply to the pulser.
  */
 void
 Xorer::setKeys( KeyVec& keyVec )
@@ -113,6 +115,7 @@ Xorer::encode( char inChar )
 		char outChar = 0;
 		xorChar = scrambler->genChar();
 		outChar = calc( inChar, xorChar );
+		step();
 		return outChar;
 	}
 	catch( ... )

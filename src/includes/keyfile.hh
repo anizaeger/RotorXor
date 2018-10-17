@@ -63,7 +63,9 @@ public:
 	static std::vector< Key* > genKeys( int num );				///< Generate new keys, and append them to keyFile.
 
 	static std::string expKey();						///< Exports keyFile as base64 string.
-	static void impKey( const std::string& );				///< Imports keyFile as base64 string.
+	static std::vector< unsigned char > expKeyData();			///< Exports keyFile as byte vector.
+	static void impKey( const std::string& );				///< Imports keyFile from base64 string.
+	static void impKeyData( const std::vector< unsigned char >& );		///< Imports keyFile from byte vector.
 
 	static Key* const getKey( const int );					///< Returns a pointer to a specific key.
 	static std::vector< Key* > getKeys();					///< Returns keyFile as a vector of pointers.
