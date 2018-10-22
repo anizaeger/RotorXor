@@ -22,16 +22,8 @@
  * @file
  * @author Anakin-Marc Zaeger
  *
- * @brief Header file for the RotorXor Resource Managememt Module.
+ * @brief Source code for the RotorXor Resource Managememt Module.
  *
  */
 
-#ifndef ROTORXOR_MANAGEMENT_H
-#define ROTORXOR_MANAGEMENT_H
-
-namespace RotorXor
-{
-	
-}
-
-#endif /* ROTORXOR_MANAGEMENT_H */
+using namespace RotorXor;

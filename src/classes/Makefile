@@ -65,3 +65,10 @@ $(OBJ)/handler.$(OFILES): $(CLASSES)/handler.$(SFILES)
 	@echo Compiling $@
 	@$(CXX) $(CXXFLAGS) -c -o $@ $<
 	@mv $(patsubst %.o, %.d, $@) $(CLASSES)
+
+.PHONY: rotorXor.$(OFILES)
+rotorXor.$(OFILES): $(OBJ)/rotorXor.$(OFILES)
+$(OBJ)/rotorXor.$(OFILES): $(CLASSES)/rotorXor.$(SFILES)
+	@echo Compiling $@
+	@$(CXX) $(CXXFLAGS) -c -o $@ $<
+	@mv $(patsubst %.o, %.d, $@) $(CLASSES)
