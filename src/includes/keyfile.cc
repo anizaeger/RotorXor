@@ -73,7 +73,7 @@ KeyFile::genKey()
 	}
 	while ( tmpQ == key->p );
 	key->q = tmpQ;
-	key->s = genSeed( key->p, key->q );
+	key->r = genSeed( key->p, key->q );
 	keyFile.push_back( std::move( key ));
 	return keyPtr;
 }
@@ -152,7 +152,7 @@ KeyFile::checksum()
  * @param inData byte vector keychain.
  */
 void
-KeyFile::impKeyData( const std::vector< unsigned char >& inData )
+KeyFile::impKey( const std::vector< unsigned char >& inData )
 {
 
 	size_t keys = inData.size() / KEYSIZE;
@@ -185,7 +185,7 @@ KeyFile::impKey( const std::string& inString )
 	std::vector< unsigned char > buffer;
 	buffer = base64Decode( inString );
 
-	impKeyData( buffer );
+	impKey( buffer );
 }
 
 /**
@@ -230,7 +230,7 @@ KeyFile::printKeys()
 	std::cout << "Key List:" << std::endl;
 	for ( int i = 0; i < keyFile.size(); i++ )
 	{
-		std::cout << "Key " << i << ": p = " << keyFile[ i ]->p << "; q = " << keyFile[ i ]->q << "; s = " << keyFile[ i ]->s << std::endl;
+		std::cout << "Key " << i << ": p = " << keyFile[ i ]->p << "; q = " << keyFile[ i ]->q << "; r = " << keyFile[ i ]->r << std::endl;
 	}
 }
 
@@ -273,7 +273,7 @@ KeyFile::genSeed( const Prime inP, const Prime inQ )
 	do {
 		outS = seedNum( keyGen );
 	}
-	while ( !( outS % inP ) || !( outS % inQ ) || ( outS < 2 ));
+	while ( !isCoprime( outS, inP ) || !isCoprime( outS, inQ ) || ( outS < 2 ));
 	return outS;
 }
 
@@ -314,6 +314,50 @@ KeyFile::isPrime( const Prime inNum )
 		}
 	}
 	return retVal;
+}
+
+/**
+ * Whether whether or not 2 numbers are coprime.
+ *
+ * @param inX First number to be tested.
+ * @param inY Second number to be tested.
+ * @return 'true' if the numbers are coprime.
+ */
+bool
+KeyFile::isCoprime( const Seed inX, const Seed inY )
+{
+	bool retVal = bool( inX % inY );
+	return retVal;
+}
+
+/**
+ * Calculate the Greatest Common Denominator of two numbers.
+ *
+ */
+KeyFile::Seed
+KeyFile::gcd( Seed inX, Seed inY )
+{
+	while ( inX != inY )
+	{
+		if ( inX > inY )
+		{
+			inX -= inY;
+		}
+		else
+		{
+			inY -= inX;
+		}
+	}
+	return inX;
+}
+/**
+ * Calculate the Least Common Multiple of two numbers.
+ *
+ */
+KeyFile::Seed
+KeyFile::lcm( const Seed inX, const Seed inY )
+{
+	return ( inX * inY ) / gcd( inX, inY );
 }
 
 /**

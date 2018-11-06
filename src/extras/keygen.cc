@@ -26,3 +26,4 @@
  * @brief Source code for RotorXor key generator.
  *
  */
+#include "keygen.hh"

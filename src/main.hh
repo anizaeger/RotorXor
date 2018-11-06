@@ -30,6 +30,8 @@
 #ifndef ROTORXOR_MAIN_H
 #define ROTORXOR_MAIN_H
 
+#include "classes/charSet.hh"
+
 #include <boost/program_options.hpp>
 
 #include <string>
@@ -46,6 +48,9 @@ static po::options_description desc("Options");
  */
 namespace RotorXor
 {
+	const char CharSet::FIRST = 0;
+	const char CharSet::LAST = 127;
+
 	int parseArg( const int, char* [] );					///< Parse command line arguments if present.
 	int mainLoop( const int = -1 );						///< Primary execution loop.
 	void show_usage( const int = 0 );					///< Print command-line usage to screen and exit.

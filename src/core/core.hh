@@ -25,37 +25,11 @@
  * @brief Header file for interactive components of the RotorXor UI
  *
  */
-#ifndef ROTORXOR_INTERACTIVE_HH
-#define ROTORXOR_INTERACTIVE_HH
+#ifndef ROTORXOR_CORE_HH
+#define ROTORXOR_CORE_HH
 
-namespace RotorXor
-{
-	/*
-	 * MENUS
-	 */
-	int doMainMenu( int );							///< Main Menu
-	int doConfMenu( int );							///< Configuration Menu
-	int doKeyMenu( int );							///< Key Management Menu
-	int doCipherMenu( int );						///< Cipher Operations Menu
+#include "../classes/rxMngr.hh"
 
-	/*
-	 * ROTORXOR CONFIGURATION
-	 */
-	void rxInit();
-	void rxConf();
+extern RotorXor::RxMngr* const rxMngrPtr;
 
-	/*
-	 * KEYFILE MANAGEMENT
-	 */
-	void impKey();
-	void printKeyData();
-	void expKey();
-
-	/*
-	 * CIPHER OPERATIONS
-	 */
-	void encrypt();
-	void decrypt();
-}
-
-#endif /* ROTORMITE_INTERACTIVE_HH */
+#endif /* ROTORXOR_CORE_HH */

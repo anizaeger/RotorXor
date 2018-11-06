@@ -139,7 +139,7 @@ Drum::getIdxVal( const int idx ) const {
  * DRUM GENERATION
  ********************************************************************************/
 /**
- * Reset the drum's alphabet to its un-scrambled state.
+ * Reset drum's alphabet to an un-scrambled state.
  */
 void
 Drum::newWire()

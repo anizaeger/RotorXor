@@ -51,7 +51,7 @@ public:
 	/// Extract data from a Key and load it into the CSPRNG object.
 	inline void setKey( const KeyFile::Key* const key ) {
 		setPrimes( key->p, key->q );
-		setSeed( key->s );
+		setSeed( key->r );
 		reset();
 	}
 

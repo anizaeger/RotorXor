@@ -81,6 +81,7 @@ namespace RotorXor
 			rndGen.reset();
 		}
 
+		void newWire();							///< Reset drum's alphabet to an un-scrambled state.
 		void setWire( const KeyFile::Key* );				///< Shuffle the drum using the provided key.
 		char setIdxVal( const int idx, const char val );		///< Set a drum idx to a character val.
 		char getIdxVal( const int idx ) const;				///< Get the value of a specific drum idx.
@@ -102,7 +103,6 @@ namespace RotorXor
 	private:
 		RandGen rndGen;
 		std::vector< char > subTable;
-		void newWire();
 	};
 
 }

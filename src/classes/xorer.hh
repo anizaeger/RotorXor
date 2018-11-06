@@ -91,6 +91,16 @@ namespace RotorXor
 		/// Steps the pulser and scrambler.
 		void step();
 
+		/// Get number of rotors in RotorXor.
+		/**
+		 * Since the number of rotors in both the primary scrambler and
+		 * pulsor are the same, this will return the number of rotors in
+		 * the scrambler.
+		 *
+		 * @return Int indicating the number of rotors.
+		 */
+		inline int numRotors() const { return scrambler->numRotors(); }
+
 		/// Get scrambler rotor positions.
 		/**
 		 * @return String indicating the scrambler rotor positions.

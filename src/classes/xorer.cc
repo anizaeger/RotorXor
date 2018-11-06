@@ -40,12 +40,18 @@ typedef KeyFile::Key Key;
 /// Vector of pointers to keys in the primary keychain.
 typedef std::vector< Key* > KeyVec;
 
+/********************************************************************************
+ * CONSTRUCTORS AND DESTRUCTORS
+ ********************************************************************************/
 Xorer::Xorer( int numRotors )
 {
 	scrambler = new Scrambler( numRotors );
 	pulser = new Pulser( numRotors );
 }
 
+/********************************************************************************
+ * PUBLIC MEMBER FUNCTIONS
+ ********************************************************************************/
 /**
  * Initializes the scrambler and pulser with keys provided from the primary keychain.
  *
@@ -101,7 +107,8 @@ Xorer::setKeys( KeyVec& keyVec )
 
 /**
  * Accepts a character for translation.  The Xorer will use the scrambler to generate an
- * XOR character, XOR that character with inChar, and return the result.
+ * XOR character, which will be XORed with inChar.  After outChar is generated, Xorer
+ * will command its pulser to step the scrambler, after which it, will return outChar.
  *
  * @param inChar The character to be encoded.
  * @return The encoded character.

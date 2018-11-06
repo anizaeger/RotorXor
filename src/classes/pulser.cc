@@ -35,6 +35,9 @@ using namespace RotorXor;
 /// Vector of pointers to keys in the primary keychain.
 typedef std::vector< KeyFile::Key* > Keys;
 
+/********************************************************************************
+ * PUBLIC MEMBER FUNCTIONS
+ ********************************************************************************/
 /**
  * Generates a bool vector which can be used to step another scrambler.
  *

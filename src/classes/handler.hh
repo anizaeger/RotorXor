@@ -40,8 +40,8 @@ namespace RotorXor
 	/// Input/output handler and RotorXor Management Module.
 	/**
 	 * The Xorer on its own is only capable of processing individual bytes.
-	 * However, data is communicated in strings and groups of bytes.  The
-	 * handler extends the Xoror by performing the requisite operations,
+	 * However, most data is communicated using strings or groups of bytes.
+	 * The handler extends the Xoror by performing the requisite operations,
 	 * breaking up streams into individual bytes for processing by the
 	 * xorer.  In addition, the handler also handles translation between raw
 	 * cipherdata and base64 encoding, allowing for the encoding of the full
@@ -61,13 +61,20 @@ namespace RotorXor
 		inline Handler( std::vector< KeyFile::Key* >& keyVec )
 		: Xorer( keyVec ) {}
 
+		inline ~Handler() {
+			KeyFile::clear();
+		}
+
 		inline void genKeys() { Xorer::genKeys(); }			///< Generate keys for the rotorXor.
+
+		inline int numRotors() const { return Xorer::numRotors(); }	///< Get number of rotors in RotorXor.
 
 		std::string encode( const std::string& );			///< Encrypts a string and converts it to base64.
 
 		std::string decode( const std::string& );			///< Decrypts base64 to a string.
 
 		std::string cipher( const std::string& );			///< Ciphers/deciphers a string.
+		unsigned char cipher( const unsigned char );			///< Passthrough for ciphering single bytes.
 	private:
 		std::vector< unsigned char > inData;
 		std::vector< unsigned char > outData;

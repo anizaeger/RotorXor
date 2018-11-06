@@ -44,14 +44,20 @@ KEYDIR		:= $(HOME)/.rotorXor/keys
 
 DEFINES		+= -DU_HOMEDIR=$(HOME)
 DEFINES		+= -DU_KEYDIR=$(KEYDIR)
+DEFINES		+= -arch x86_64
+
+BUILD_LIBS	= -lboost_program_options
 
 #
 # File Extensions
 #
 SFILES		:= cc
 DFILES		:= d
+HFILES		:= hh
 OFILES		:= o
+GCHFILES	:= gch
 AFILES		:= a
+SOFILES		:= so
 SYMFILES	:= dSYM
 
 #
@@ -62,7 +68,19 @@ CXXFLAGS	:= -Wall -g -std=c++11
 CXXFLAGS	+= -MMD -MP
 CXXFLAGS	+= $(DEFINES)
 
+#
+# Linker Flags
+#
+LDFLAGS		:= -shared
+
+#
+# Archiver Flags
+#
+AR		:= ar
+ARFLAGS		:= crs
+
 SRCS = $(wildcard $(SRC)/**/*.$(SFILES))
+DEPS = $(SRCS:%.$(SFILES)=%.$(DFILES))
 
 SUBDIRS = $(CLASSES) $(CORE) $(DOC) $(EXTRAS) $(INC) $(SRC) $(TESTS)
 
@@ -70,7 +88,10 @@ DOXY		:= $(shell command -v doxygen 2> /dev/null)
 DOXYTOUCH	:= $(DOC)/doxy
 
 .PHONY: all
-all: version build includes classes core main docs
+all: version engine core build main docs
+
+.PHONY: engine
+engine: librotorxor.$(SOFILES)
 
 .PHONY: version
 version:
@@ -102,9 +123,11 @@ clean: cleandeps
 
 	@echo Cleaning object files...
 	@-rm -rf $(OBJ)/*.$(OFILES)
+	@-rm -rf $(OBJ)/*.$(GCHFILES)
 
 	@echo Cleaning library files...
 	@-rm -rf $(LIB)/*.$(AFILES)
+	@-rm -rf $(LIB)/*.$(SOFILES)
 
 	@echo Cleaning $(TESTS)/
 	@-rm -rf $(TESTS)/*.$(OFILES)
@@ -117,12 +140,12 @@ cleanbin:
 .PHONY: cleandeps
 cleandeps:
 	@echo Cleaning dependencies...
-	@-rm -rf $(CORE)/*.$(DFILES) $(CORE)/*.$(SYMFILES)
-	@-rm -rf $(CLASSES)/*.$(DFILES) $(CLASSES)/*.$(SYMFILES)
-	@-rm -rf $(EXTRAS)/*.$(DFILES) $(EXTRAS)/*.$(SYMFILES)
-	@-rm -rf $(INC)/*.$(DFILES) $(INC)/*.$(SYMFILES)
-	@-rm -rf $(SRC)/*.$(DFILES) $(SRC)/*.$(SYMFILES)
-	@-rm -rf $(TESTS)/*.$(DFILES) $(TESTS)/*.$(SYMFILES)
+	@-rm -rf $(CORE)/*.$(SYMFILES) $(CORE)/*.$(DFILES)
+	@-rm -rf $(CLASSES)/*.$(SYMFILES) $(CLASSES)/*.$(DFILES)
+	@-rm -rf $(EXTRAS)/*.$(SYMFILES) $(EXTRAS)/*.$(DFILES)
+	@-rm -rf $(INC)/*.$(SYMFILES) $(INC)/*.$(DFILES)
+	@-rm -rf $(SRC)/*.$(SYMFILES) $(SRC)/*.$(DFILES)
+	@-rm -rf $(TESTS)/*.$(SYMFILES) $(TESTS)/*.$(DFILES)
 
 .PHONY: cleandocs
 cleandocs:
@@ -137,5 +160,5 @@ install: all
 	@mv $(BUILD)/$(PROGEXEC) $(HOME)/bin
 	@mkdir -p $(KEYDIR)
 
--include $(SRCS:%.$(SFILES)=%.$(DFILES))
+-include $(DEPS)
 include $(addsuffix /Makefile, $(SUBDIRS))

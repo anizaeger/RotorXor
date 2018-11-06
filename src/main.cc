@@ -31,18 +31,19 @@
 #include "constants.hh"
 
 #include "core/interactive.hh"
+#include "core/core.hh"
 
 #include "includes/basicSys.hh"
 
 #include <sysexits.h>
 #include <unistd.h>
 
-
-
 #include <iomanip>
 #include <iostream>
 #include <string>
 #include <vector>
+
+RotorXor::RxMngr* const rxMngrPtr = new RotorXor::RxMngr();
 
 /**
  * @param argc Number of command line arguments.
@@ -84,8 +85,8 @@ RotorXor::parseArg( const int argc, char* argv[])
 		( "verbose,v", "Verbose output." )
 
 		( "keyfile,k", po::value< std::string >(), "Filename of rotorxor key." )
-		( "keydata", po::value< std::string >(), "Base64 of rotorxor key." )
-		( "rotors,r", po::value< int >(), "Default number of rotors." )
+		( "keydata,K", po::value< std::string >(), "Base64 of rotorxor key." )
+		( "rotors,r", po::value< int >()->default_value(1), "Initial number of rotors." )
 	;
 
 	po::variables_map vm;
@@ -105,6 +106,16 @@ RotorXor::parseArg( const int argc, char* argv[])
 		}
 		std::cout << std::endl;
 		show_usage( EX_USAGE );
+	}
+
+	if ( vm.count( "keydata"))
+	{
+		rxMngrPtr->init(vm["keydata"].as< std::string >());
+	}
+
+	if ( vm.count( "rotors"))
+	{
+		rxMngrPtr->init(vm["rotors"].as< int >());
 	}
 
 	if ( vm.count( "help" ))

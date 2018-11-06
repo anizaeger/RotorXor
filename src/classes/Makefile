@@ -1,14 +1,16 @@
 # Classes
 
-classes: charGen.$(OFILES) charSet.$(OFILES) drum.$(OFILES) pulser.$(OFILES) rotor.$(OFILES) rotorBank.$(OFILES) scrambler.$(OFILES) xorer.$(OFILES) handler.$(OFILES)
+RX_OBJ		= $(OBJ)/base64.$(OFILES) $(OBJ)/keyfile.$(OFILES) $(OBJ)/randgen.$(OFILES) $(OBJ)/charGen.$(GCHFILES) $(OBJ)/charSet.$(OFILES) $(OBJ)/drum.$(OFILES) $(OBJ)/pulser.$(OFILES) $(OBJ)/rotor.$(OFILES) $(OBJ)/rotorBank.$(OFILES) $(OBJ)/rxMngr.$(OFILES) $(OBJ)/scrambler.$(OFILES) $(OBJ)/xorer.$(OFILES) $(OBJ)/handler.$(OFILES)
+
+classes: charGen.$(GCHFILES) charSet.$(OFILES) drum.$(OFILES) pulser.$(OFILES) rotor.$(OFILES) rotorBank.$(OFILES) rxMngr.$(OFILES) scrambler.$(OFILES) xorer.$(OFILES) handler.$(OFILES)
 .PHONY: classes
 
-.PHONY: charGen.$(OFILES)
-charGen.$(OFILES): $(OBJ)/charGen.$(OFILES)
-$(OBJ)/charGen.$(OFILES): $(CLASSES)/charGen.$(SFILES)
+.PHONY: charGen.$(GCHFILES)
+charGen.$(GCHFILES): $(OBJ)/charGen.$(GCHFILES)
+$(OBJ)/charGen.$(GCHFILES): $(CLASSES)/charGen.$(HFILES)
 	@echo Compiling $@
 	@$(CXX) $(CXXFLAGS) -c -o $@ $<
-	@mv $(patsubst %.o, %.d, $@) $(CLASSES)
+	@mv $(patsubst %.gch, %.d, $@) $(CLASSES)
 
 .PHONY: charSet.$(OFILES)
 charSet.$(OFILES): $(OBJ)/charSet.$(OFILES)
@@ -66,9 +68,24 @@ $(OBJ)/handler.$(OFILES): $(CLASSES)/handler.$(SFILES)
 	@$(CXX) $(CXXFLAGS) -c -o $@ $<
 	@mv $(patsubst %.o, %.d, $@) $(CLASSES)
 
-.PHONY: rotorXor.$(OFILES)
-rotorXor.$(OFILES): $(OBJ)/rotorXor.$(OFILES)
-$(OBJ)/rotorXor.$(OFILES): $(CLASSES)/rotorXor.$(SFILES)
+.PHONY: rxMngr.$(OFILES)
+rxMngr.$(OFILES): $(OBJ)/rxMngr.$(OFILES)
+$(OBJ)/rxMngr.$(OFILES): $(CLASSES)/rxMngr.$(SFILES)
 	@echo Compiling $@
 	@$(CXX) $(CXXFLAGS) -c -o $@ $<
 	@mv $(patsubst %.o, %.d, $@) $(CLASSES)
+
+.PHONY: librotorxor.$(SOFILES)
+librotorxor.$(SOFILES): $(LIB)/librotorxor.$(SOFILES)
+$(LIB)/librotorxor.$(SOFILES): $(LIB)/librotorxor.$(AFILES)
+	@echo Generating shared library $@
+	@$(CXX) $(CXXFLAGS) -o $@ $< $(LDFLAGS)
+
+.PHONY: librotorxor.$(AFILES)
+librotorxor.$(AFILES): $(LIB)/librotorxor.$(AFILES)
+$(LIB)/librotorxor.$(AFILES): $(RX_OBJ) \
+	$(OBJ)/base64.$(OFILES) \
+	$(OBJ)/keyfile.$(OFILES) \
+	$(OBJ)/randgen.$(OFILES)
+	@echo Generating library $@
+	@$(AR) $(ARFLAGS) $@ $^

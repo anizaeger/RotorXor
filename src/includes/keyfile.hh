@@ -49,11 +49,11 @@ public:
 	struct Key {
 		Prime p;							///< First Prime for CSPRNG.
 		Prime q;							///< Second Prime for CSPRNG.
-		Seed s;								///< Seed for CSPRNG.
+		Seed r;								///< Seed for CSPRNG.
 
 		/// Wipe all key values before destroying object.
 		inline ~Key() {
-			p = 0, q = 0, s = 0;
+			p = 0, q = 0, r = 0;
 		}
 	};
 #pragma pack( pop )
@@ -65,7 +65,7 @@ public:
 	static std::string expKey();						///< Exports keyFile as base64 string.
 	static std::vector< unsigned char > expKeyData();			///< Exports keyFile as byte vector.
 	static void impKey( const std::string& );				///< Imports keyFile from base64 string.
-	static void impKeyData( const std::vector< unsigned char >& );		///< Imports keyFile from byte vector.
+	static void impKey( const std::vector< unsigned char >& );		///< Imports keyFile from byte vector.
 
 	static Key* const getKey( const int );					///< Returns a pointer to a specific key.
 	static std::vector< Key* > getKeys();					///< Returns keyFile as a vector of pointers.
@@ -93,6 +93,9 @@ private:
 
 	static bool isBlum( const Prime );
 	static bool isPrime( const Prime );
+	static bool isCoprime( const Seed, const Seed );
+	static Seed gcd( Seed, Seed );
+	static Seed lcm( const Seed, const Seed );
 };
 
 #endif /* NYFNET_KEYFILE_HH */

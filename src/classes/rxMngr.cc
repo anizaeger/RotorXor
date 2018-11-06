@@ -22,25 +22,70 @@
  * @file
  * @author Anakin-Marc Zaeger
  *
- * @brief Header file for the RotorXor Resource Managememt Module.
+ * @brief Source code for the RotorXor Resource Managememt Module.
  *
  */
 
-#ifndef ROTORXOR_MANAGEMENT_H
-#define ROTORXOR_MANAGEMENT_H
+#include "rxMngr.hh"
 
-#include "handler.hh"
+using namespace RotorXor;
 
-#include "../includes/keyfile.hh"
+/// Keys for the CSPRNG.
+typedef KeyFile::Key Key;
 
-namespace RotorXor
+RxMngr::RxMngr()
 {
-	class RotorXor {
-	public:
 	
-	private:
-		
-	};
 }
 
-#endif /* ROTORXOR_MANAGEMENT_H */
+void
+RxMngr::init( const int numRotors )
+{
+	wipe();
+	handler = new Handler( numRotors );
+	handler->genKeys();
+}
+
+void
+RxMngr::init( const std::string& keyTxt )
+{
+	KeyFile::impKey( keyTxt );
+	init( KeyFile::getKeys());
+}
+
+void
+RxMngr::init( KeyVec keyData )
+{
+	wipe();
+	handler = new Handler( keyData );
+}
+
+std::string
+RxMngr::encode( const std::string& inString )
+{
+	std::string outString = "";
+	if ( handler ) {
+		outString = handler->encode( inString );
+	}
+	return outString;
+}
+
+std::string
+RxMngr::decode( const std::string& inString )
+{
+	std::string outString = "";
+	if ( handler ) {
+		outString = handler->decode( inString );
+	}
+	return outString;
+}
+
+std::string
+RxMngr::cipher( const std::string& inString )
+{
+	std::string outString = "";
+	if ( handler ) {
+		outString = handler->cipher( inString );
+	}
+	return outString;
+}

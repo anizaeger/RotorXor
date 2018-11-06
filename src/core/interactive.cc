@@ -26,12 +26,18 @@
  *
  */
 #include "interactive.hh"
+#include "core.hh"
 
+#include "../includes/basicSys.hh"
+#include "../includes/interface.hh"
 #include "../includes/menu.hh"
+
 #include <iostream>
 #include <string>
 
-using namespace RotorXor;
+/********************************************************************************
+ * MENUS                                                                   *
+ ********************************************************************************/
 
 /**
  * Print the main menu, request user input, and redirect control to the proper
@@ -41,15 +47,16 @@ using namespace RotorXor;
  *
  * @return Menu tier level to return control to.
  */
-int RotorXor::doMainMenu( int menuTier )
+int
+RotorXor::doMainMenu( int menuTier )
 {
 	int destMenuTier = menuTier;
 	MenuData mainMenuData;
 	mainMenuData.title = "Main Menu";
 	mainMenuData.menuItems = {
-		{ "a", "Configure Rotormite" },
-		{ "b", "Key Management" },
-		{ "c", "Encode/Decode" },
+		{ "a", "RotorXor Configuration" },
+		{ "b", "Encode/Decode" },
+		{ "c", "Manage Keychain" },
 		{ "x", "Exit Program" }
 	};
 
@@ -70,11 +77,10 @@ int RotorXor::doMainMenu( int menuTier )
 				destMenuTier = doConfMenu( menuTier - 1 );
 				break;
 				case 1:
-				destMenuTier = doKeyMenu( menuTier - 1 );
-				break;
-				case 2:
 				destMenuTier = doCipherMenu( menuTier - 1 );
 				break;
+				case 2:
+				destMenuTier = doKeyMenu( menuTier - 1 );
 				default:
 				break;
 			}
@@ -92,13 +98,15 @@ int RotorXor::doMainMenu( int menuTier )
  *
  * @return Menu tier level to return control to.
  */
-int RotorXor::doConfMenu( int menuTier )
+int
+RotorXor::doConfMenu( int menuTier )
 {
 	int destMenuTier = menuTier;
 	MenuData confMenuData;
 	confMenuData.title = "RotorXor Configuration Menu";
 	confMenuData.menuItems = {
-		{ "a", "Set Rotor Count" },
+		{ "a", "Set Rotors" },
+		{ "b", "Display Rotor Configuration" },
 		{ "r", "Return to Previous Menu" },
 		{ "x", "Exit Program" }
 	};
@@ -122,9 +130,13 @@ int RotorXor::doConfMenu( int menuTier )
 			switch( choice )
 			{
 				case 0:
-				break;
+					rxInit();
+					break;
+				case 1:
+					rxConf();
+					break;
 				default:
-				break;
+					break;
 			}
 		}
 	}
@@ -139,16 +151,16 @@ int RotorXor::doConfMenu( int menuTier )
  *
  * @return Menu tier level to return control to.
  */
-int RotorXor::doKeyMenu( int menuTier )
+int
+RotorXor::doKeyMenu( int menuTier )
 {
 	int destMenuTier = menuTier;
 	MenuData keyMenuData;
 	keyMenuData.title = "Key Management Menu";
 	keyMenuData.menuItems = {
-		{ "a", "Generate Keychain" },
-		{ "b", "Import Keychain" },
-		{ "c", "Export Keychain" },
-		{ "d", "Keychain Information" },
+		{ "a", "Import Base64 Keychain" },
+		{ "b", "Print Key Data" },
+		{ "c", "Export Base64 Keychain" },
 		{ "r", "Return to Previous Menu" },
 		{ "x", "Exit Program" }
 	};
@@ -156,6 +168,7 @@ int RotorXor::doKeyMenu( int menuTier )
 	Menu keyMenu( keyMenuData );
 	while ( destMenuTier == menuTier )
 	{
+
 		int choice = keyMenu.doMenu();
 
 		if ( choice == ( keyMenuData.menuItems.size() - 1 ))
@@ -171,13 +184,16 @@ int RotorXor::doKeyMenu( int menuTier )
 			switch( choice )
 			{
 				case 0:
-				break;
+					impKey();
+					break;
 				case 1:
-				break;
+					printKeyData();
+					break;
 				case 2:
-				break;
+					expKey();
+					break;
 				default:
-				break;
+					break;
 			}
 		}
 	}
@@ -192,7 +208,8 @@ int RotorXor::doKeyMenu( int menuTier )
  *
  * @return Menu tier level to return control to.
  */
-int RotorXor::doCipherMenu( int menuTier )
+int
+RotorXor::doCipherMenu( int menuTier )
 {
 	int destMenuTier = menuTier;
 	MenuData cipherMenuData;
@@ -222,13 +239,111 @@ int RotorXor::doCipherMenu( int menuTier )
 			switch( choice )
 			{
 				case 0:
-				break;
+					encrypt();
+					break;
 				case 1:
-				break;
+					decrypt();
+					break;
 				default:
 				break;
 			}
 		}
 	}
 	return destMenuTier;
+}
+
+/********************************************************************************
+ * ROROTXOR CONFIGURATION                                                       *
+ ********************************************************************************/
+/**
+ * UI initializing RotorXor.
+ */
+void
+RotorXor::rxInit()
+{
+	int numRotors = choiceNum( "How many rotors", 1, 64 );
+	rxMngrPtr->init( numRotors );
+}
+
+/**
+ * Print RotorXor Configuration.
+ */
+void
+RotorXor::rxConf()
+{
+	std::cout << "Number of rotors: " << rxMngrPtr->numRotors() << std::endl;
+	pauseKey();
+}
+/********************************************************************************
+ * KEY MANAGEMENT                                                               *
+ ********************************************************************************/
+/**
+ * UI for generating keychain based on current RotorXor Configuration.
+ */
+
+/**
+ * UI for importing a keychain.  Will also resize scramblers if necessary.
+ */
+void
+RotorXor::impKey()
+{
+	std::string inData;
+	std::cout << "Please enter your key's base64 string now: " << std::endl;
+	std::cin >> inData;
+	clearBuffer();
+
+	rxMngrPtr->init( inData );
+	printf( "Checksum: 0x%X\n", KeyFile::checksum());
+	pauseKey();
+}
+/**
+ * UI for exporting a keychain.
+ */
+void
+RotorXor::expKey()
+{
+	std::cout << KeyFile::expKey() << std::endl;
+	pauseKey();
+}
+
+/**
+ * UI for displaying information regarding currently-loaded keychain.
+ */
+void
+RotorXor::printKeyData()
+{
+	// Display key checksum.
+	printf( "Checksum: 0x%X\n", KeyFile::checksum());
+	// Display information about scramblers, rotors, generators, etc...
+	KeyFile::printKeys();
+	pauseKey();
+}
+/********************************************************************************
+ * CIPHER OPERATIONS                                                            *
+ ********************************************************************************/
+/**
+ * UI for encrypting plaintext and returning base64-encoded ciphertext.
+ */
+void
+RotorXor::encrypt()
+{
+	std::string inString, outData;
+	std::cout << "Enter the plaintext to be encrypted: ";
+	std::getline( std::cin, inString );
+	outData = rxMngrPtr->encode( inString );
+	std::cout << outData << std::endl;
+	pauseKey();
+}
+/**
+ * UI for decrypting base64-encoded ciphertext and returning plaintext.
+ */
+void
+RotorXor::decrypt()
+{
+	std::string inData, outString;
+	std::cout << "Enter the cipher data to be decrypted: ";
+	std::getline( std::cin, inData );
+	outString = rxMngrPtr->decode( inData );
+	std::cout << outString << std::endl;
+	pauseKey();
 }

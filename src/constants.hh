@@ -47,12 +47,16 @@ const char PROGNAME[] = STRINGIFYMACRO(P_NAME);
 const char PROGRAMMER_NAME[] = "Anakin-Marc Zaeger";
 
 /// Major version number
+//! \{
 #define MAJOR 0
-const int V_MAJOR = MAJOR;			///< Major version number
+const int V_MAJOR = MAJOR;
+//! \}
 
 /// Minor version number
+//! \{
 #define MINOR 1
-const int V_MINOR = MINOR;			///< Minor version number
+const int V_MINOR = MINOR;
+//! \}
 
 /// Full version number - Preprocessor define P_VERSION should be generated and set in Makefile
 const char VERSION[] = STRINGIFYMACRO(P_VERSION);

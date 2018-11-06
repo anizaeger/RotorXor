@@ -34,6 +34,9 @@
 
 using namespace RotorXor;
 
+/********************************************************************************
+ * PUBLIC MEMBER FUNCTIONS
+ ********************************************************************************/
 /**
  * Ciphers a string, then converts the resulting ciphertext into base64.
  *
@@ -87,14 +90,38 @@ std::string
 Handler::cipher( const std::string& inString )
 {
 	std::string outString;
+	Xorer::reset();
 	try
 	{
 		for ( int c = 0; c < inString.length(); c++ )
 		{
 			char inChar = inString[ c ];
-			outString += Xorer::encode( inChar );
+			char outChar = cipher( inChar );
+			outString += outChar;
 		}
 		return outString;
+	}
+	catch ( ... )
+	{
+		throw;
+	}
+}
+
+/**
+ * Encrypts/decrypts plaintext/ciphertext.
+ *
+ * @param inChar Byte to be passed through rotorXor.
+ *
+ * @return RotorXor output.
+ */
+unsigned char
+Handler::cipher( const unsigned char inChar )
+{
+	std::string outString;
+	try
+	{
+		char outChar = Xorer::encode( inChar );
+		return outChar;
 	}
 	catch ( ... )
 	{
