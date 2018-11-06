@@ -1,0 +1,21 @@
+doc/
+  IMPORTANT DOCUMENTATION about RotorXor which MUST be read.
+
+html/
+  Automatically-generated documentation about the source-code.
+  Contains documentation about the usage of RotorXor, as well as
+  explanations about the source code and APIs.  HTML version.
+
+latex/
+  Automatically-generated documentation about the source-code.
+  Contains documentation about the usage of RotorXor, as well as
+  explanations about the source code and APIs.  LaTex version.
+
+ABOUT
+  Information about the RotorXor project.
+
+BUG-REPORT
+  Information about reporting bugs.
+
+FAQ
+  Frequently Asked Questions, and their answers.
