@@ -36,13 +36,20 @@
 
 namespace RotorXor
 {
+	/**
+	 * Individual key database records.
+	 */
 	class KeyRec {
 	public:
+		/// Create a new key record.
 		KeyRec( std::vector< unsigned char >& );
 	private:
 		
 	};
 
+	/**
+	 * Key database.
+	 */
 	class KeyDB {
 	public:
 	private:

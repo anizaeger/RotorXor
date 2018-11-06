@@ -43,7 +43,7 @@
 #include <string>
 #include <vector>
 
-RotorXor::RxMngr* const rxMngrPtr = new RotorXor::RxMngr();
+RotorXor::RxMngr* const rxMngrPtr = new RotorXor::RxMngr();			///< Global constant pointer to rotorxor engine.
 
 /**
  * @param argc Number of command line arguments.

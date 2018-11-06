@@ -37,7 +37,7 @@
 
 namespace RotorXor
 {
-	/// Input/output handler and RotorXor Management Module.
+	/// RotorXor input/output handler.
 	/**
 	 * The Xorer on its own is only capable of processing individual bytes.
 	 * However, most data is communicated using strings or groups of bytes.
@@ -46,10 +46,6 @@ namespace RotorXor
 	 * xorer.  In addition, the handler also handles translation between raw
 	 * cipherdata and base64 encoding, allowing for the encoding of the full
 	 * ASCII character set, as well as raw binary data.
-	 *
-	 * The handler also provides a common interface for all components of
-	 * RotorXor, allowing all management functions to be done through a
-	 * single object.
 	 */
 	class Handler
 	: protected Xorer
