@@ -80,13 +80,14 @@ RotorXor::parseArg( const int argc, char* argv[])
 		( "license,l", "Show license information and exit." )
 		( "version", "Show version and exit." )
 
-		( "ascii,a", "Input/output is Base64-encoded.")
-		( "interactive,I", "Launch interactive interface." )
+		( "quiet,q", "Quiet mode.  [NOT YET IMPLEMENTED]" )
 		( "verbose,v", "Verbose output." )
 
-		( "keyfile,k", po::value< std::string >(), "Filename of rotorxor key." )
-		( "keydata,K", po::value< std::string >(), "Base64 of rotorxor key." )
+		( "keyrecs,k", po::value< std::string >(), "Filename of rotorxor keyDB CSV." )
+		( "keydata,K", po::value< std::string >(), "Base64 rotorxor key data." )
 		( "rotors,r", po::value< int >()->default_value(1), "Initial number of rotors." )
+
+		( "interactive,I", "Launch interactive interface." )
 	;
 
 	po::variables_map vm;
