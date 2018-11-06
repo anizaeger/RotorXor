@@ -30,6 +30,6 @@
 
 #include "../classes/rxMngr.hh"
 
-extern RotorXor::RxMngr* const rxMngrPtr;
+extern RotorXor::RxMngr* const rxMngrPtr;					///< Global constant pointer to rotorxor engine.
 
 #endif /* ROTORXOR_CORE_HH */

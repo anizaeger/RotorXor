@@ -109,13 +109,31 @@ COMMAND LINE INTERFACE
 
   Options:
 
-  @c -q	@c \--quiet:	Quiet mode - Forces batch mode and suppresses
-			messages to stdout.  Messages to stderr will
-			still be printed. [NOT YET IMPLEMENTED]
+  @c -h	@c \--help:		Show help and exit.
 
-  @c -h	@c \--help:	Show help and exit.
+  @c -l	@c \--license:		Show license information and exit.
 
-  @c -v	@c \--version:	Show version and exit.
+  @c \--version:		Show version and exit.
+
+  @n
+
+  @c -q	@c \--quiet:		Quiet mode - Forces batch mode and suppresses
+				messages to stdout.  Messages to stderr will
+				still be printed. [NOT YET IMPLEMENTED]
+
+  @c -v @c \--verbose:		Verbose mode.
+
+  @n
+
+  @c -k	@c \--keyrecs:		Filename of rotorxor record CSV.
+
+  @c -K	@c \--keydata:		Base64 rotorxor key data.
+
+  @c -r	@c \--rotors:		Initial number of rotors.
+
+  @n
+
+  @c -I	@c \--interactive:	Launch interactive interface.
 
 CONTENTS
 --------

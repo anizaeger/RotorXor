@@ -39,6 +39,16 @@ namespace RotorXor
 {
 	typedef KeyFile::Key Key;			///< Individual keys.
 	typedef std::vector< Key* > KeyVec;		///< Vector of pointers to keys.
+
+	/// RotorXor Management Module
+	/**
+	 * The RotorXor Managent Module creates a common interface for the
+	 * RotorXor.  The interface allows the RotorXor to be reinitialized,
+	 * either with a preexisting key, or a blank set of rotors which will
+	 * then generate a new key themselves.  Additionally, it provides an
+	 * interface for encrypting ASCII plaintext, as well as decrypting
+	 * base64 ciphertext.
+	 */
 	class RxMngr {
 	public:
 		/// Default constructor for RotorXor.
@@ -59,11 +69,11 @@ namespace RotorXor
 
 		inline int numRotors() { return handler->numRotors(); }		///< Return the number of RotorXor rotors.
 
-		std::string encode( const std::string& );
+		std::string encode( const std::string& );			///< Encode ASCII plaintext into base64 ciphertext.
 
-		std::string decode( const std::string& );
+		std::string decode( const std::string& );			///< Decode base64 ciphertext into ASCII plaintext.
 
-		std::string cipher( const std::string& );
+		std::string cipher( const std::string& );			///< Process individual bytes and return the result.
 
 	private:
 		Handler* handler = nullptr;
