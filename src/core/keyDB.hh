@@ -23,25 +23,31 @@
  * @file
  * @author Anakin-Marc Zaeger
  *
- * @brief Source code for key manager.
+ * @brief Header file for key manager.
  *
  */
-#include "keyMngr.hh"
+#ifndef ROTORXOR_KEYMNGR
+#define ROTORXOR_KEYMNGR
 
-#include "../includes/fileio.hh"
+#include "../includes/keyfile.hh"
 
-#include "../includes/basicSys.hh"
+#include <string>
+#include <vector>
 
-using namespace RotorXor;
-
-void
-readKey( std::string keyHash ) {
-	std::string filename = "0x" + keyHash + ".key";
-}
-
-void
-writeKey()
+namespace RotorXor
 {
-	std::string filename = rprintf( "%X", KeyFile::checksum());
-	newFilename( "0x", "", "key", filename );
+	class KeyRec {
+	public:
+		KeyRec( std::vector< unsigned char >& );
+	private:
+		
+	};
+
+	class KeyDB {
+	public:
+	private:
+		std::vector< KeyRec* > keyDB;
+	};
 }
+
+#endif /* ROTORXOR_KEYMNGR */
